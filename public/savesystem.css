@@ -1,0 +1,297 @@
+/* Save/Load System UI Styles */
+
+.save-load-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #000000;
+  border: 2px solid #00CC00;
+  color: #00CC00;
+  font-family: 'White Rabbit', monospace;
+  z-index: 1000;
+  min-width: 500px;
+  max-width: 700px;
+  max-height: 80vh;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 0 20px rgba(0, 204, 0, 0.5);
+}
+
+.save-load-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #00CC00;
+  background-color: rgba(0, 204, 0, 0.05);
+}
+
+.save-load-title {
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.save-load-close {
+  background: none;
+  border: none;
+  color: #00CC00;
+  font-size: 32px;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.save-load-close:hover {
+  color: #000000;
+  background-color: #00CC00;
+}
+
+.save-load-content {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
+}
+
+.save-load-tabs {
+  display: flex;
+  border-bottom: 1px solid #00CC00;
+  background-color: rgba(0, 204, 0, 0.02);
+}
+
+.save-load-tab {
+  flex: 1;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  color: #00CC00;
+  font-family: 'White Rabbit', monospace;
+  font-size: 16px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+
+.save-load-tab:hover {
+  background-color: rgba(0, 204, 0, 0.1);
+}
+
+.save-load-tab.active {
+  border-bottom-color: #00CC00;
+  background-color: rgba(0, 204, 0, 0.1);
+}
+
+.save-load-slots {
+  overflow-y: auto;
+  padding: 15px;
+  flex: 1;
+}
+
+.save-slot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #00CC00;
+  background-color: rgba(0, 204, 0, 0.02);
+  transition: all 0.2s;
+}
+
+.save-slot:hover {
+  background-color: rgba(0, 204, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 204, 0, 0.3);
+}
+
+.slot-info {
+  flex: 1;
+  font-size: 14px;
+}
+
+.slot-number {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.slot-level {
+  color: #00AA00;
+  margin-bottom: 3px;
+}
+
+.slot-date {
+  color: #008800;
+  font-size: 12px;
+}
+
+.slot-action,
+.slot-delete {
+  margin-left: 10px;
+  padding: 8px 15px;
+  background-color: #000000;
+  border: 1px solid #00CC00;
+  color: #00CC00;
+  font-family: 'White Rabbit', monospace;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.slot-action:hover {
+  background-color: #00CC00;
+  color: #000000;
+  box-shadow: 0 0 10px rgba(0, 204, 0, 0.5);
+}
+
+.slot-delete {
+  margin-left: 5px;
+  background-color: rgba(204, 0, 0, 0.1);
+  border-color: #CC0000;
+  color: #CC0000;
+}
+
+.slot-delete:hover {
+  background-color: #CC0000;
+  color: #000000;
+  box-shadow: 0 0 10px rgba(204, 0, 0, 0.5);
+}
+
+.save-load-info {
+  padding: 10px 15px;
+  border-top: 1px solid #00CC00;
+  font-size: 12px;
+  color: #008800;
+  background-color: rgba(0, 204, 0, 0.02);
+}
+
+/* Notification styles */
+.save-notification {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 15px 25px;
+  border: 2px solid #00CC00;
+  background-color: #000000;
+  color: #00CC00;
+  font-family: 'White Rabbit', monospace;
+  font-size: 14px;
+  z-index: 2000;
+  animation: slideIn 0.3s ease-out;
+  max-width: 300px;
+  word-wrap: break-word;
+  transition: opacity 0.3s;
+}
+
+.save-notification-success {
+  border-color: #00CC00;
+  color: #00CC00;
+}
+
+.save-notification-error {
+  border-color: #CC0000;
+  color: #CC0000;
+}
+
+.save-notification-warning {
+  border-color: #CCCC00;
+  color: #CCCC00;
+}
+
+.save-notification-info {
+  border-color: #0088CC;
+  color: #0088CC;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Scrollbar styling for save slots */
+.save-load-slots::-webkit-scrollbar {
+  width: 8px;
+}
+
+.save-load-slots::-webkit-scrollbar-track {
+  background: rgba(0, 204, 0, 0.05);
+}
+
+.save-load-slots::-webkit-scrollbar-thumb {
+  background: #00CC00;
+  border-radius: 4px;
+}
+
+.save-load-slots::-webkit-scrollbar-thumb:hover {
+  background: #00AA00;
+}
+
+/* Non-fullscreen mode: Show buttons in UI */
+#saveSaveButton,
+#saveLoadButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  background-color: #000000;
+  border: 1px solid #00CC00;
+  color: #00CC00;
+  font-family: 'White Rabbit', monospace;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+#saveSaveButton:hover,
+#saveLoadButton:hover {
+  background-color: #00CC00;
+  color: #000000;
+  box-shadow: 0 0 15px rgba(0, 204, 0, 0.6);
+}
+
+#saveSaveButton {
+  right: 20px;
+}
+
+#saveLoadButton {
+  right: 160px;
+}
+
+/* Responsive design */
+@media (max-width: 800px) {
+  .save-load-panel {
+    min-width: 90vw;
+    max-width: 95vw;
+  }
+  
+  .save-slot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .slot-action,
+  .slot-delete {
+    margin-left: 0;
+    margin-top: 8px;
+    width: 100%;
+  }
+}

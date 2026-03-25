@@ -4,6 +4,8 @@
   var preview = null;
   var doomCanvas = null;
   var fullscreenButton = null;
+  var saveSaveButton = null;
+  var saveLoadButton = null;
 
   window.Module = {
     monitorRunDependencies: function (toLoad) {
@@ -63,8 +65,14 @@
 
     if (!Module.inFullscreen) {
       doomCanvas.classList.remove('centered');
+      // Show save/load buttons when exiting fullscreen
+      if (saveSaveButton) saveSaveButton.style.display = 'block';
+      if (saveLoadButton) saveLoadButton.style.display = 'block';
     } else {
       doomCanvas.classList.add('centered');
+      // Hide save/load buttons when entering fullscreen
+      if (saveSaveButton) saveSaveButton.style.display = 'none';
+      if (saveLoadButton) saveLoadButton.style.display = 'none';
     }
   }
 
@@ -75,11 +83,19 @@
 
     preview.classList.add('hidden');
     doomScript.src = game + '.js';
+    
+    // Initialize save system when game loads
+    setTimeout(function() {
+      if (typeof SaveSystem !== 'undefined') {
+        SaveSystem.setCurrentGame(game === 'doom1' ? '1' : '2');
+        SaveSystem.init();
+      }
+    }, 1000);
   }
 
   window.addEventListener('DOMContentLoaded', function () {
     var games = document.getElementsByClassName('doom');
-      preview = document.getElementById('preview');
+    preview = document.getElementById('preview');
 
     document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock || document.webkitExitPointerLock;
     document.exitFullscreen = document.exitFullscreen || document.mozCancelFullScreen || document.webkitCancelFullScreen;
@@ -97,5 +113,34 @@
 
     Module.setStatus = getStatus;
     Module.canvas = getCanvas();
+    
+    // Create save/load buttons for non-fullscreen mode
+    createSaveLoadButtons();
   });
+  
+  function createSaveLoadButtons() {
+    saveSaveButton = document.createElement('button');
+    saveSaveButton.id = 'saveSaveButton';
+    saveSaveButton.textContent = 'SAVE GAME';
+    saveSaveButton.style.display = 'none';
+    saveSaveButton.addEventListener('click', function() {
+      if (typeof SaveSystem !== 'undefined') {
+        SaveSystem.showSaveUI();
+        SaveSystem.switchTab('save');
+      }
+    });
+    document.body.appendChild(saveSaveButton);
+    
+    saveLoadButton = document.createElement('button');
+    saveLoadButton.id = 'saveLoadButton';
+    saveLoadButton.textContent = 'LOAD GAME';
+    saveLoadButton.style.display = 'none';
+    saveLoadButton.addEventListener('click', function() {
+      if (typeof SaveSystem !== 'undefined') {
+        SaveSystem.showSaveUI();
+        SaveSystem.switchTab('load');
+      }
+    });
+    document.body.appendChild(saveLoadButton);
+  }
 })();
