@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="UZDoom WebAssembly Port">
+    <meta name="theme-color" content="#00CC00">
+    <meta name="msapplication-TileColor" content="#00CC00">
+    <meta name="keywords" content="UZDoom,WebAssembly,Doom,Game">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <title>UZDoom Web - Powered by WebAssembly</title>
+
+    <link rel="stylesheet" type="text/css" href="./index.css" />
+    <link rel="stylesheet" type="text/css" href="./uzDoomSettings.css" />
+    <link rel="stylesheet" type="text/css" href="./savesystem.css" />
+    
+    <script type="text/javascript" src="./savesystem.js"></script>
+    <script type="text/javascript" src="./uzDoomLoader.js"></script>
+    <script type="text/javascript" src="./uzDoomIntegration.js"></script>
+    <script type="text/javascript" src="./index.js"></script>
+    
+    <style>
+      .control-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 200px;
+        z-index: 100;
+        background-color: #000000;
+        border: solid 1px #00CC00;
+        color: #00CC00;
+        padding: 6px 20px;
+        font-family: 'White Rabbit', monospace;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        border-radius: 0;
+        transition: all 0.2s ease;
+      }
+
+      .control-btn:hover {
+        background-color: #00CC00;
+        color: #000000;
+      }
+
+      #settingsBtn {
+        right: 200px;
+      }
+
+      #pauseBtn {
+        right: 90px;
+      }
+
+      .uzdoom-launch {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        color: #00cc00;
+        font-family: 'White Rabbit', monospace;
+        text-align: center;
+      }
+
+      .uzdoom-launch h1 {
+        font-size: 72px;
+        letter-spacing: 4px;
+        margin: 0 0 20px 0;
+        text-shadow: 0 0 20px rgba(0, 204, 0, 0.5);
+      }
+
+      .uzdoom-launch p {
+        font-size: 18px;
+        margin: 0 0 40px 0;
+        letter-spacing: 2px;
+      }
+
+      .launch-btn {
+        background-color: #00cc00;
+        color: #000000;
+        border: none;
+        padding: 15px 40px;
+        font-family: 'White Rabbit', monospace;
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+        border-radius: 0;
+        box-shadow: 0 0 20px rgba(0, 204, 0, 0.5);
+        transition: all 0.2s ease;
+      }
+
+      .launch-btn:hover {
+        box-shadow: 0 0 40px rgba(0, 204, 0, 0.8);
+        transform: scale(1.05);
+      }
+
+      .launch-btn:active {
+        transform: scale(0.95);
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="doom"></canvas>
+
+    <div id="loader">
+      <span>Loading UZDoom...</span>
+      <span id="progress">0.0%</span>
+    </div>
+
+    <button id="fullscreen">FULLSCREEN</button>
+    <button id="settingsBtn" class="control-btn">SETTINGS</button>
+    <button id="pauseBtn" class="control-btn">PAUSE</button>
+
+    <div id="preview">
+      <div class="uzdoom-launch">
+        <h1>UZDOOM</h1>
+        <p>Enhanced DOOM Engine for the Web</p>
+        <button id="launchBtn" class="launch-btn">LAUNCH GAME</button>
+      </div>
+    </div>
+
+    <script>
+      // Initialize UZDoom when page loads
+      document.addEventListener('DOMContentLoaded', async function() {
+        // Initialize the UZDoom Integration
+        const initialized = await UZDoomIntegration.init();
+        
+        if (initialized) {
+          // Setup button listeners
+          const settingsBtn = document.getElementById('settingsBtn');
+          const launchBtn = document.getElementById('launchBtn');
+          const pauseBtn = document.getElementById('pauseBtn');
+
+          if (settingsBtn) {
+            settingsBtn.addEventListener('click', function() {
+              UZDoomLoader.showSettingsMenu();
+            });
+          }
+
+          if (launchBtn) {
+            launchBtn.addEventListener('click', async function() {
+              const started = await UZDoomIntegration.startGame();
+              if (started) {
+                document.getElementById('preview').style.display = 'none';
+                settingsBtn.style.display = 'block';
+                pauseBtn.style.display = 'block';
+              }
+            });
+          }
+
+          if (pauseBtn) {
+            pauseBtn.addEventListener('click', function() {
+              const status = UZDoomIntegration.getGameStatus();
+              if (status.running) {
+                UZDoomIntegration.pauseGame();
+                pauseBtn.textContent = 'RESUME';
+              } else {
+                UZDoomIntegration.resumeGame();
+                pauseBtn.textContent = 'PAUSE';
+              }
+            });
+          }
+        } else {
+          console.error('Failed to initialize UZDoom');
+        }
+      });
+    </script>
+  </body>
+</html>
